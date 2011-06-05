@@ -14,7 +14,7 @@ class Mysql {
 	public function __construct($user, $pass, $host) {
 		$this->username = $user;
 		$this->password = $pass;
-		$this->host		= $host;
+		$this->host     = $host;
 	}
 	
 	public function connect() {
@@ -34,12 +34,18 @@ class Mysql {
 		return $selectedDB;
 	}
 	
-	public function query($sql, $connection = NULL) {
+	public function query($sql, $db = NULL) {
 		if (!$sql) {
 			throw new Exception ("Exception: No query string given");
 		}
-		if (!$result = mysql_query($sql)) {
-		
+		if (!$db) {
+			if (!$result = mysql_query($sql)) {
+				throw new Exception("Exception: " . mysql_error());
+			}
+		} else {
+			if (!$result = mysql_query($sql, $db)) {
+			
+			}
 		}
 	}
 
