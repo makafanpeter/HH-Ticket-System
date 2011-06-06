@@ -40,6 +40,17 @@ class Mysql {
 		return $selectedDB;
 	}
 	
+	public function escape($args) {
+		if (is_array($args)) {
+			foreach ($args as $arg) {
+				$escaped[] = mysql_real_escape_string($arg);
+			}
+		} else {
+			$escaped = mysql_real_escape_string($args);
+		}
+		return $escaped;
+	}
+	
 	public function query($sql, $db = NULL) {
 		if (!$sql) {
 			throw new Exception ("Exception: No query string given");

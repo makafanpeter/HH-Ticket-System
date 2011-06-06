@@ -1,15 +1,3 @@
-<?PHP
-include "classes/db/mysql.php";
-$mysql = new Mysql("localhost", "root","");
-$mysql->connect();
-$mysql->selectDB("test");
-$result = $mysql->query("SELECT * FROM users");
-
-while ($row = $mysql->fetchArray($res4ult)) {
-	echo $row['username'] . " " . $row['password'];
-}
-?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -23,8 +11,8 @@ while ($row = $mysql->fetchArray($res4ult)) {
 <div id="banner"></div>
 <div id="content_top"></div>
 <div id="left_column">
-<div id="blue_top"><div class="header">Hello</div></div>
-<div id="small_mid">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ante nulla, congue ut blandit ut, suscipit condimentum nulla.</div>
+<div id="blue_top"><div class="header">Navigation</div></div>
+<div id="small_mid"><ul><li><a href = "index.php">Home</a></li><li><a href = "index.php">View Tickets</a></li><li><a href = "index.php">Change Details</a></li><li><a href = "index.php">Logout</a></li></ul></div>
 <div id="small_bot"></div>
 <div id="green_top">
   <div class="header">We're valid xhtml and css!</div>

@@ -12,6 +12,27 @@ padding: 0px;
 
 }
 
+a:link {
+	color: #333333;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #333333;
+	text-decoration: none;
+}
+
+a:active {
+	color: #333333;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #333333;
+	text-decoration: none;
+	font-weight: bold;
+}
+
 div#container {
 background: url(images/container.png);
 width: 713px;
