@@ -54,10 +54,11 @@ a:hover {
 
 #column1 {
     width: 25%;
+    margin: 0px 0px 0px 3px;
 }
 
 #column2 {
-    margin: 0px 25px;
+    margin: 0px 0px 0px 23px;
     width: 68%;
 }
 
