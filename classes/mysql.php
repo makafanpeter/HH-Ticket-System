@@ -67,15 +67,13 @@ class Mysql {
 		return $result;
 	}
 	
+	public function numRows($qryResult) {
+		$rows = mysql_num_rows($qry);
+		return $rows;
+	} 
+	
 	public function fetchArray($qryResult) {
-		if (!$qryResult) {
-			throw new Exception("Exception: No query result provided");
-		}
-		if (!$fetch = mysql_fetch_array($qryResult)) {
-			if (mysql_error()) {
-				throw new Exception("Exception: Unable to fetch results: " . mysql_error());
-			}
-		}
+		$fetch = mysql_fetch_array($qryResult);
 		return $fetch;
 	}
 

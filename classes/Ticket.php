@@ -2,37 +2,55 @@
 
 class Ticket {
 
-	public $database;
-	public $title;
-	public $message;
+	protected $database;
+	private $title;
+	private $msg;
 	
-	
-	public function __construct($db, $title, $msg, $id = NULL) {
-		
-		$this->database = $db
-		$this->title = $title;
-		$this->message = $message;
-		
-		try {
-			$con = $this->database->connect();
-			$selected = $this->database->selectDB("helptool", $con);
-		} catch (Exception $e) {
-			
-		}		
-		
-		if ($id) {
-			if ($this->exists($id)) {
-				
-			} else {
-				$this->generateID();
-			}
-		}
-		
+	public function __construct(Mysql $db) {	
+		$this->database = $db;
 	}
 	
 	public function exists($id) {
 		$qry = $this->database->query("SELECT * FROM ticket WHERE ticket_id = '$id'");
-		$fetch = $this->database->fetchArray($qry)
+		$rows = $this->database->numRows($qry);
+		if ($rows > 0) {
+			return true;
+		} else { 
+			return false;
+		}
+	}
+	
+	public function generateID() {
+		
+	}
+	
+	
+	public function getTitle() {
+		$qry = $this->database->query("SELECT * FROM tickets WHERE ticket_id = '$id'");
+		$result = $this->database->fetchArray($qry);
+		return $result['title'];
+	}
+	
+	public function getMsg() {
+		$qry = $this->database->query("SELECT * FROM tickets WHERE ticket_id = '$id'");
+		$result = $this->database->fetchArray($qry);
+		return $result['message'];
+	}
+	
+	public function setTitle($title) {
+		if (!empty($title)) {
+			$this->title = $title;
+			return true;
+		}
+		return false;
+	}
+	
+	public function setMsg($msg) {
+		if (!empty($msg)) {
+			$this->message = $msg;
+			return true;
+		}
+		return false;
 	}
 	
 

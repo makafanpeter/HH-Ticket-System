@@ -26,7 +26,7 @@ class Util {
         return false;
     }
 }
-
+/*
 $pass = "Lololw^7";
 
 echo "Password: $pass - ";
@@ -37,4 +37,5 @@ if (Util::isValidPass($pass) == 1) {
 } else {
     echo " is not valid!";
 }
+*/
 ?>
