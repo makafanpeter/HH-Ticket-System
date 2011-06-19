@@ -53,6 +53,10 @@ class Ticket {
 		return false;
 	}
 	
+	public function submitTicket() {
+		
+	}
+	
 
 }
 
