@@ -3,21 +3,24 @@
 class Ticket {
 
 	protected $database;
+	protected $id;
 	private $title;
-	private $msg;
+	private $message;
 	
-	public function __construct(Mysql $db) {	
+	public function __construct(Mysql $db, $id = NULL) {	
 		$this->database = $db;
+		$this->ticket_id = $id;
+		
+		if ($id) {
+			$this->obtainTicket($id);
+		}
 	}
 	
-	public function exists($id) {
-		$qry = $this->database->query("SELECT * FROM ticket WHERE ticket_id = '$id'");
-		$rows = $this->database->numRows($qry);
-		if ($rows > 0) {
-			return true;
-		} else { 
-			return false;
-		}
+	private function obtainTicket($id) {
+		$qry = $this->database->query("SELECT * FROM ticket WHERE ticket_id='$id'");
+		$result = $this->database->fetchArray($qry);
+		$this->title = $result['title'];
+		$this->message = $result['message'];
 	}
 	
 	public function generateID() {
@@ -26,15 +29,11 @@ class Ticket {
 	
 	
 	public function getTitle() {
-		$qry = $this->database->query("SELECT * FROM tickets WHERE ticket_id = '$id'");
-		$result = $this->database->fetchArray($qry);
-		return $result['title'];
+		return $this->title;
 	}
 	
 	public function getMsg() {
-		$qry = $this->database->query("SELECT * FROM tickets WHERE ticket_id = '$id'");
-		$result = $this->database->fetchArray($qry);
-		return $result['message'];
+		return $this->message;
 	}
 	
 	public function setTitle($title) {
@@ -51,6 +50,12 @@ class Ticket {
 			return true;
 		}
 		return false;
+	}
+	
+	public function getReplies() {
+		$qry = $this->database->query("SELECT * FROM ticket_reply WHERE ticket_id = '$this->ticket_id'");
+		$result = $this->database->fetchArray($qry);
+		return $result;
 	}
 	
 	public function submitTicket() {

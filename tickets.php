@@ -1,7 +1,20 @@
 <?PHP
 function __autoload($class_name) {
-    include $class_name . '.php';
+    include 'classes/' . $class_name . '.php';
 }
+$mysql = new Mysql("localhost", "root", "");
+
+//// hardcode a user id for now...
+$uid = 4;
+
+$con = $mysql->connect();
+$database = $mysql->selectDB("helptool", $con);
+
+///// Create tickets
+
+/////
+
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -38,12 +51,29 @@ function __autoload($class_name) {
             
             <div id = "column2" class = "float-left">
                 <div id = "content" class = "float-left rounded border shadow box">
-                    <div id = "content-header" class = "rounded header">Welcome to the house of fun</div>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ante nulla, congue ut blandit ut, suscipit condimentum nulla. Donec nisi est, tempor vitae tincidunt eu, fringilla nec nulla. 
-                    Nam ut magna sed enim luctus bibendum. <br /><br />
-                    Sed eu risus neque, aliquam gravida mi. Donec tincidunt ligula dictum magna semper a tempor lacus sollicitudin. Duis elit lorem, iaculis non condimentum vel, iaculis vel tellus.
-                    Phasellus suscipit nisi vel odio porta nec pharetra augue varius. Proin lorem velit, luctus ut interdum id, tincidunt id nulla. Sed iaculis sodales scelerisque. 
-                    Vestibulum venenatis quam a urna ullamcorper aliquet. Duis sapien massa, tempus suscipit porttitor ut, porttitor ac ipsum.
+				<?PHP if (isset($_GET['id'])) { ?>
+				
+                    <div id = "content-header" class = "rounded header">Tickets</div>
+						<table border = "1">
+							<tr><td>ID</td><td>Title</td><td>Status</td><td>Data Created</td></tr>
+						<?php
+						///// List tickets
+						$qry = $mysql->query("SELECT ticket_id FROM ticket WHERE user_id = '$uid'");
+						while ($row = $mysql->fetchArray($qry)) {
+							$ticket = new Ticket($mysql, $row['ticket_id']);
+							echo "<tr><td><a href = \"tickets.php?id=".$row['ticket_id']."\">", $row['ticket_id'], "</a>",
+							"</td><td>", $ticket->getTitle(),
+							"</td><td>Status</td><td>Data Created</td></tr>";
+							
+						}
+				} else {
+						?>
+						</table>
+						
+				<?PHP 
+							$ticket->getReplies();
+						}
+				?>
                 </div>
             </div>
             
