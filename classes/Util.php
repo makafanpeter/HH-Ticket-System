@@ -7,6 +7,9 @@ class Util {
     const email_regex = "/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/";
     const strong_pass_regex = "/^(?=.*([^a-zA-Z0-9]))(?=.*([0-9]))(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$/";
     const valid_pass_regex = "/^(?=.*(\d|[^a-zA-Z]))(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$/";
+	const valid_string = "/^[A-Za-z0-9\ ]+$/";
+	const valid_string_no_spaces = "/^[A-Za-z0-9]+$/";
+	const valid_url = "/^(http(s?):\\/\\/|ftp:\\/\\/{1})((\w+\.)+)\w{2,}(\/?)$/i";
     
 	/**
 	isEmail			-	Checks if an email is valid.
@@ -14,8 +17,7 @@ class Util {
 	return			- 	Returns true or false.
 	*/
     public static function isEmail($email) {
-        if (preg_match(self::email_regex, $email)) return true;
-        return false;
+        return (preg_match(self::email_regex, $email)) ? true : false;
     }
     
 	/**
@@ -27,7 +29,7 @@ class Util {
         if (preg_match(str_replace("8", $length, self::strong_pass_regex), $password)) return 1;
         if (preg_match(str_replace("8", $length, self::valid_pass_regex), $password)) return 0;
         return -1;
-    }
+    } 
     
 	/**
 	isLength		-	determins if a string is of a cetain lenght.
@@ -42,6 +44,38 @@ class Util {
         }
         return false;
     }
+	
+	public static function isNumeric($value) {
+		return is_numeric($value);
+	}
+	
+	public static function isNull($value) {
+		return ($value === NULL) ? true : false;
+	}
+	
+	public static function isText($value) {
+		return ereg (self::valid_string, $value) ? true : false;
+	}
+	
+	public static function isTextNoSpaces($value) {
+		return ereg (self::valid_string_no_spaces, $value) ? true : false;
+	}
+	
+	public static function isString($value) {
+		return is_string($value);
+	}
+	
+	public static function isDate($date) {
+		return (strtotime($date) === -1 || $date == '') ? false : true;
+	}
+	
+	public static function cleanString($string) {
+		return addslashes(htmlentities(trim($string)));
+	}
+	
+	public static function isURL($url) {
+		return ereg (self::valid_url, $url) ? true : false;
+	}
 	
 	/**
 	hashString		-	Hashes a string or uses a predefined hash.
