@@ -114,14 +114,26 @@ class Mysql {
 	public function numRows($qryResult) {
 		$rows = mysql_num_rows($qry);
 		return $rows;
-	} 
+	}
+	
+	/**
+	result			- Returns the result of a query.
+	@param			- Result of mysql_query.
+	Return			- result of mysql_query result.
+	*/
+	public function result($qryResult, $row = 0) {
+		return mysql_result($qryResult, $row);
+	}
 	
 	/**
 	fetchArray 		- Returns an Array of the queried results.
 	@param			- Result of mysql_query.
 	Return			- Array of mysql_query result.
 	*/
-	public function fetchArray($qryResult) {
+	public function fetchArray($qryResult = NULL) {
+		if ($qryResult == NULL) {
+			if ($this->lastResult) $qryResult = $this->lastResult; 
+		}
 		$fetch = mysql_fetch_array($qryResult);
 		$this->lastResult = $qryResult;
 		$this->arrayResult = $fetch;
@@ -133,7 +145,10 @@ class Mysql {
 	@param			- Result of mysql_query.
 	Return			- Object of mysql_query result.
 	*/
-	public function fetchObject($qryResult) {
+	public function fetchObject($qryResult = NULL) {
+		if ($qryResult == NULL) {
+			if ($this->lastResult) $qryResult = $this->lastResult; 
+		}
 		$fetch = mysql_fetch_object($qryResult);
 		$this->lastResult = $qryResult;
 		$this->objectResult = $fetch;
