@@ -1,29 +1,77 @@
 <?PHP
 class User {
 	
-	protected $mysql;
-	protected $username;
-	protected $password;
+	protected $database;
 	
-	public function __construct($user, $pass) {
-		$this->username = $user;
-		$this->password = $pass;
-		try {
-			$this->mysql = new Mysql(HOST, USERNAME, PASSWORD);
-		} catch (Exception $e) {
-			die ($e->getMessage());	
-		}
+	private $user;
+	
+	public function __construct(Mysql $db) {	
+		$this->database = $db;
 	}
 	
-	public function authenticate() {
+	public function login($email, $password) {
+		if (!$user = check_credentials($email, $password)) {
+			
+			$this->user = $user;
+			$_SESSION['token_auth'] = $this->user['user_id'];
+			return $user;
+		}
+		return false;
+	}
+	
+	public function logout() {
+		if ($user) {
+			$this->user = null;
+			unset($_SESSION['token_auth']);
+			return true;
+		}
+		return false;
+	}
+	
+	public function check_credentials($email, $password) {
+		$email = $this->database->escape($email);
+		$password = $this->database->escape($password);
 		
+		$query = $this->database->query("SELECT * FROM user WHERE email = '$email' AND password = '$password'");
+		$result = $this->database->fetchArray($query);
+		if ($result) {
+			return $result;
+		}
+		return false;
+	}
+	
+	public function authenticate($authKey) {
+		if ($this->user) {
+			if ($authKey == $this->database->result($this->database->query("SELECT verify_key FROM user where user_id = '".$this->user['user_id']."'"))) {
+				$this->database->query("UPDATE user SET verified = '1' WHERE user_id = '".$this->user['user_id']."'");
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public function deauthenticate() {
-		
+		if ($this->user) {
+			$this->database->query("UPDATE user SET verified = '0' WHERE user_id = '".$this->user['user_id']."'");
+			return true;
+		}
+		return false;
 	}
 	
+	public function isAuthenticated() {
+		return $this->$user["verified"];
+	}
 	
-	
+	public function isOnline() {
+		$time_now = date("U");
+		$online_time = $this->user['online_time'];
+		$time_frame = ((15 * 60) * 60); // 15 Minutes
+		
+		if (($online_time + $time_frame) >= $time_now) {
+			$this->database->query("UPDATE user SET online_time = '$time_now' WHERE user_id = '".$this->user['user_id']."'");
+			return true;
+		}
+		return false;
+	}
 }
 ?>
