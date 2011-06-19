@@ -23,6 +23,9 @@ class User {
 		
 	}
 	
+	public function register() {
+		
+	}
 	
 	
 }
