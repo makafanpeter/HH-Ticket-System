@@ -27,6 +27,18 @@ a:hover {
     font-weight: bold;
 }
 
+table, tr, th, td{
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+table, tr {
+    margin: 3px auto;
+    width: 99%;
+    border: 1px solid #555555;
+}
+
 /* 
  * ID
 */

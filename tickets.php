@@ -5,10 +5,10 @@ function __autoload($class_name) {
 $mysql = new Mysql("localhost", "root", "");
 
 //// hardcode a user id for now...
-$uid = 4;
+$uid = 1;
 
 $con = $mysql->connect();
-$database = $mysql->selectDB("helptool", $con);
+$database = $mysql->selectDB("hh", $con);
 
 ///// Create tickets
 
@@ -51,14 +51,18 @@ $database = $mysql->selectDB("helptool", $con);
             
             <div id = "column2" class = "float-left">
                 <div id = "content" class = "float-left rounded border shadow box">
-				<?PHP if (!isset($_GET['id'])) { ?>
+				<?PHP if (!isset($_GET['id'])) { 
+                $qry = $mysql->query("SELECT * FROM ticket WHERE user_id = '$uid'");
+                                
+                if ($qry) {
+                ?>
 				
                     <div id = "content-header" class = "rounded header">Tickets</div>
 						<table border = "1">
-							<tr><td>ID</td><td>Title</td><td>Status</td><td>Data Created</td></tr>
+							<tr><th>ID</th><th>Title</th><th>Status</th><th>Data Created</th></tr>
 						<?php
 						///// List tickets
-						$qry = $mysql->query("SELECT ticket_id FROM ticket WHERE user_id = '$uid'");
+						
 						while ($row = $mysql->fetchArray($qry)) {
 							$ticket = new Ticket($mysql, $row['ticket_id']);
 							echo "<tr><td><a href = \"tickets.php?id=".$row['ticket_id']."\">", $row['ticket_id'], "</a>",
@@ -66,17 +70,27 @@ $database = $mysql->selectDB("helptool", $con);
 							"</td><td>Status</td><td>Data Created</td></tr>";
 							
 						}
+                        ?>
+                        </table>
+                        <?php
+                        } else {
+                            echo "No tickets!";
+                        }
 				} else {
-						?>
-						</table>
-						
-				<?PHP 
-							$ticket = new Ticket($mysql, $_GET['id']);
-							$tmp = $ticket->getReplies();
-							foreach ($tmp as $val) {
-								echo $val . "<br />";
-							}
-						}
+                    $ticket = new Ticket($mysql, $_GET['id']);
+                    
+                    echo "<strong>Ticket Title: </strong>", $ticket->getTitle(), "<br />";
+                    echo "<strong>Ticket Message: </strong>", $ticket->getMsg(), "<br /><br /><hr />";
+                    $tmp = $ticket->getReplies();
+                    if ($tmp) {
+                        echo "<br /><strong>Replies:</strong> <br /><br />";
+                        foreach ($tmp as $val) {
+                            echo $val['comment'] . "<br />";
+                        }
+                    } else {
+                        echo "<strong>No Replies!</strong>";
+                    }
+                }
 				?>
                 </div>
             </div>
