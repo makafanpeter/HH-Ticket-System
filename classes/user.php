@@ -9,8 +9,8 @@ class User {
 		$this->database = $db;
 	}
 	
-	public function login($email, $password) {
-		if (!$user = check_credentials($email, $password)) {
+	public function login($username, $password) {
+		if (!$user = check_credentials($username, $password)) {
 			
 			$this->user = $user;
 			$_SESSION['token_auth'] = $this->user['user_id'];
@@ -28,11 +28,11 @@ class User {
 		return false;
 	}
 	
-	public function check_credentials($email, $password) {
-		$email = $this->database->escape($email);
+	public function check_credentials($username, $password) {
+		$username = $this->database->escape($username);
 		$password = $this->database->escape($password);
 		
-		$query = $this->database->query("SELECT * FROM user WHERE email = '$email' AND password = '$password'");
+		$query = $this->database->query("SELECT * FROM user WHERE username = '$username' AND password = '$password'");
 		$result = $this->database->fetchArray($query);
 		if ($result) {
 			return $result;
