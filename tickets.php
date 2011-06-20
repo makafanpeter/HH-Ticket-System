@@ -51,7 +51,7 @@ $database = $mysql->selectDB("helptool", $con);
             
             <div id = "column2" class = "float-left">
                 <div id = "content" class = "float-left rounded border shadow box">
-				<?PHP if (isset($_GET['id'])) { ?>
+				<?PHP if (!isset($_GET['id'])) { ?>
 				
                     <div id = "content-header" class = "rounded header">Tickets</div>
 						<table border = "1">
@@ -71,7 +71,11 @@ $database = $mysql->selectDB("helptool", $con);
 						</table>
 						
 				<?PHP 
-							$ticket->getReplies();
+							$ticket = new Ticket($mysql, $_GET['id']);
+							$tmp = $ticket->getReplies();
+							foreach ($tmp as $val) {
+								echo $val . "<br />";
+							}
 						}
 				?>
                 </div>
