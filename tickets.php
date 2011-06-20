@@ -77,15 +77,20 @@ $database = $mysql->selectDB("hh", $con);
                             echo "No tickets!";
                         }
 				} else {
-							$ticket = new Ticket($mysql, $_GET['id']);
-							if ($ticket->hasReplies()) {
-                                while ($tmp = $ticket->getReplies()) {
-                                    echo $val . "<br />";
-                                }
-                            } else {
-                                echo "No replies!";
-                            }
-						}
+                    $ticket = new Ticket($mysql, $_GET['id']);
+                    
+                    echo "<strong>Ticket Title: </strong>", $ticket->getTitle(), "<br />";
+                    echo "<strong>Ticket Message: </strong>", $ticket->getMsg(), "<br /><br /><hr />";
+                    $tmp = $ticket->getReplies();
+                    if ($tmp) {
+                        echo "<strong>Replies:</strong> <br /><br /><hr />";
+                        foreach ($tmp as $val) {
+                            echo $val['comment'] . "<br /><hr>";
+                        }
+                    } else {
+                        echo "<strong>No Replies!</strong>";
+                    }
+                }
 				?>
                 </div>
             </div>
