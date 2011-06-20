@@ -12,7 +12,7 @@ class Error {
     }
     
     public function add($title, $description) {
-        $title = strtolower(str_replace(" ", "_", $title));
+        $title = md5(strtolower(str_replace(" ", "_", $title)));
         
         if (!isset($_SESSION['error'][$title])) {
             $_SESSION['error'][$title] = $description;
@@ -23,7 +23,7 @@ class Error {
         if (isset($_SESSION['error'])) {
             $error_message = "<div class = \"error\">ERROR: ";
             foreach ($_SESSION['error'] as $key => $value) {
-                $error_message .= $key . " - " . $value . "<br />";
+                $error_message .= $value . "<br />";
             }
             $error_message .= "</div>";
             
@@ -34,10 +34,10 @@ class Error {
     }
     
     public function displayError($title) {
-        $title = strtolower(str_replace(" ", "_", $title));
+        $title = md5(strtolower(str_replace(" ", "_", $title)));
         if (isset($_SESSION['error'])) {
-            $error_message = "<div class = \"error\">";
-            $error_message .= $title. " - " . $_SESSION['error'][$title];
+            $error_message = "<div class = \"error\">ERROR: ";
+            $error_message .= $_SESSION['error'][$title];
             $error_message .= "</div>";
             
             $this->clear();
