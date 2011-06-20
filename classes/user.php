@@ -10,7 +10,7 @@ class User {
 	}
 	
 	public function login($username, $password) {
-		if (!$user = check_credentials($username, $password)) {
+		if (!$user = $this->check_credentials($username, $password)) {
 			
 			$this->user = $user;
 			$_SESSION['token_auth'] = $this->user['user_id'];
