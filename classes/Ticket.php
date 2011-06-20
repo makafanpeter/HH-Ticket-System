@@ -6,6 +6,8 @@ class Ticket {
 	protected $id;
 	private $title;
 	private $message;
+    
+    private $replies;
 	
 	public function __construct(Mysql $db, $id = NULL) {	
 		$this->database = $db;
@@ -53,8 +55,20 @@ class Ticket {
 	}
 	
 	public function getReplies() {
+        
+        $result = array();
 		$qry = $this->database->query("SELECT * FROM ticket_reply WHERE ticket_id = '$this->ticket_id'");
-		return $this->database->fetchArray($qry);
+		while ($row = $this->database->fetchArray($qry)) {
+			$result[] = $row; 
+		}
+		return $result;
+        
+        /*
+        if (Util::isNull($this->replies)) {
+            $this->replies = $this->database->query("SELECT * FROM ticket_reply WHERE ticket_id = '$this->ticket_id'");
+		}
+        return $this->database->fetchArray($this->replies);
+        */
 	}
 	
     public function hasReplies() {
