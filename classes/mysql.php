@@ -112,8 +112,7 @@ class Mysql {
 	Return			- Number of rows found from mysql_query result.
 	*/
 	public function numRows($qryResult) {
-		$rows = mysql_num_rows($qry);
-		return $rows;
+		return mysql_num_rows($qryResult);
 	}
 	
 	/**
