@@ -54,10 +54,14 @@ class Ticket {
 	
 	public function getReplies() {
 		$qry = $this->database->query("SELECT * FROM ticket_reply WHERE ticket_id = '$this->ticket_id'");
-		$result = $this->database->fetchArray($qry);
-		return $result;
+		return $this->database->fetchArray($qry);
 	}
 	
+    public function hasReplies() {
+        $qry = $this->database->query("SELECT * FROM ticket_reply WHERE ticket_id = '$this->ticket_id'");
+		return $this->database->numRows($qry) > 0 ? true : false;
+    }
+    
 	public function submitTicket() {
 		
 	}
