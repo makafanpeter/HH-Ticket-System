@@ -10,20 +10,10 @@ class User {
 	}
 	
 	public function login($username, $password) {
-		if (!$user = $this->check_credentials($username, $password)) {
-			
+		if ($user = $this->check_credentials($username, $password)) {
 			$this->user = $user;
 			$_SESSION['token_auth'] = $this->user['user_id'];
 			return $user;
-		}
-		return false;
-	}
-	
-	public function logout() {
-		if ($user) {
-			$this->user = null;
-			unset($_SESSION['token_auth']);
-			return true;
 		}
 		return false;
 	}
@@ -34,12 +24,20 @@ class User {
 		
 		$query = $this->database->query("SELECT * FROM user WHERE username = '$username' AND password = '$password'");
 		$result = $this->database->fetchArray($query);
-		if ($result) {
-			return $result;
+        
+        if ($result) return $result;
+        return false;
+	}
+	
+	public function logout() {
+		if ($user) {
+			$this->user = null;
+			unset($_SESSION['token_auth']);
+			return true;
 		}
 		return false;
 	}
-	
+    
 	public function authenticate($authKey) {
 		if ($this->user) {
 			if ($authKey == $this->database->result($this->database->query("SELECT verify_key FROM user where user_id = '".$this->user['user_id']."'"))) {

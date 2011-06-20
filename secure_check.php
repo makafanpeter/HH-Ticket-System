@@ -1,18 +1,25 @@
 <?php
+session_start();
+
 function __autoload($class_name) {
     include 'classes/' . $class_name . '.php';
 }
 $mysql = new Mysql("localhost", "root", "");
-$error = "";
+
+$con = $mysql->connect();
+$database = $mysql->selectDB("hh", $con);
+
+$error = new Error();
 
 if (isset($_POST['login_btn'])) {
     $user = new User($mysql);
-    if (!$user->login($_POST['username'], $_POST['password'])) {
-        $error .= "#Login failed!";
+    
+    //echo ($user->login($_POST['username'], $_POST['password'])) ? "True" : "False";
+    
+    if ($user->login($_POST['username'], $_POST['password']) == false) {
+        $error->add("Login Fail", "Username or Password were incorrect!");
     }
 }
-if (Util::isText($error)) {
-    header("Location: index.php?e=".$error);
-}
+
 header("Location: index.php");
 ?>
