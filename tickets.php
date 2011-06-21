@@ -2,13 +2,15 @@
 function __autoload($class_name) {
     include 'classes/' . $class_name . '.php';
 }
-$mysql = new Mysql("localhost", "root", "");
+include "config.php";
+
+$mysql = new Mysql(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
 
 //// hardcode a user id for now...
 $uid = 1;
 
 $con = $mysql->connect();
-$database = $mysql->selectDB("hh", $con);
+$database = $mysql->selectDB(MYSQL_DATABASE, $con);
 
 ///// Create tickets
 
