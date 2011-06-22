@@ -11,8 +11,15 @@
             var username = document.getElementById("id_habbo").value;
             if (username.length > 0) {
                 var link = "http://www.habbo.com/habbo-imaging/avatarimage?user=" + username + "&action=wav&direction=3&head_direction=3&gesture=sml&size=l";
-                
+                document.getElementById("habbo_check").innerHTML = "Is this you?";
                 img.setAttribute("src", link);
+                img.setAttribute("style", "display: block;");
+            }
+            else
+            {
+                document.getElementById("habbo_check").innerHTML = "";
+                img.setAttribute("src", '');
+                img.setAttribute("style", "display: none;");
             }
         }
     </script>
@@ -61,6 +68,7 @@
                             </form>
                         </div>
                         <div class = "float-right">
+                            <br /><h3 id = "habbo_check"></h3>
                             <img id = "habbo_avatar" alt = "" />
                         </div>
                     </div>
