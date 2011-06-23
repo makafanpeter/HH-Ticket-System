@@ -88,11 +88,12 @@ class User {
 	public function register($details) {
 		// Make sure $details array keys match the user table fields
 		// Allows users to have their own naming schemes for variables
-		$matches = $this->tableMatch($details);
+		/*
+        $matches = $this->tableMatch($details);
 		if (in_array(false, $matches, true)) {
 			throw new Exception("Html post variables do not match user table entries.");
 		}
-		
+		*/
 		// INSERT INTO users table (field1 = $details['field1']) etc
 		// since user table fields must have a match of details array keys 
 		// you obviously know your own table names and you know which array element must go into them
@@ -107,7 +108,39 @@ class User {
 		
 		// Sigh - confused myself with this code. 
 		
+        // Keeping it simple people must follow the naming scheme we document they can change it if they deem appropriate.
+        // It posses a major security risks because people can easily find out what the fields are called in the database without
+        // looking at the database.  Therefore its dangerous and leaves a vulnerability exposed to the system.
+        
+        Util::cleanData($data);
+        extract($details);
+        
+        if (Util::isTextNoSpaces($username)) {
+            if (!$this->isUsernameTaken("username", $username)) {
+                if (Util::isEmail($email)) {
+                    if (!$this->isTaken("email", $email) {
+                        if ($password == $re_password) {
+                            if (Util::isValidPassword($re_password) >= 0) {
+                                if (Util::isTextNoSpaces($habbo_name)) {
+                                    if (!Util::isNull($accept)) {
+                                        // Everything passed validation!
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
 	}
 	
+    public function isTaken($feild, $value) {
+        $query = $this->database->query("SELECT user_id FROM user WHERE $feild = '$value'");
+        $result = $this->database->result($query);
+        return ($result) ? true : false;
+    }
+    
 }
 ?>
