@@ -76,6 +76,20 @@ class Util {
 	public static function isURL($url) {
 		return ereg (self::valid_url, $url) ? true : false;
 	}
+    
+    public static function cleanData($data) {
+        if (is_array($data)) {
+            foreach($data as $val) {
+                $val = Self::cleanString($val);
+            }
+        } else {
+            if (Self::isString($data) || Self::isText($data) || Self::isTextNoSpaces($data)) {
+                $data = Self:cleanString($data);
+            }
+        }
+        
+        return $data;
+    }
 	
 	/**
 	hashString		-	Hashes a string or uses a predefined hash.
