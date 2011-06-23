@@ -118,7 +118,7 @@ class User {
         if (Util::isTextNoSpaces($username)) {
             if (!$this->isUsernameTaken("username", $username)) {
                 if (Util::isEmail($email)) {
-                    if (!$this->isTaken("email", $email) {
+                    if (!$this->isTaken("email", $email)) {
                         if ($password == $re_password) {
                             if (Util::isValidPassword($re_password) >= 0) {
                                 if (Util::isTextNoSpaces($habbo_name)) {
