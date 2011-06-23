@@ -71,5 +71,43 @@ class User {
 		}
 		return false;
 	}
+	
+	public function tableMatch($details) {
+		$fieldArray = $this->database->fetchFields("user");
+		$fields = array();
+		$match = array();
+		foreach ($fieldArray as $val) {
+			$fields[] = $val['Field'];
+		}
+		foreach ($details as $dkey => $detail) {
+			$match[] = in_array($dkey, $fields, true);
+		}
+		return $match;
+	}
+	
+	public function register($details) {
+		// Make sure $details array keys match the user table fields
+		// Allows users to have their own naming schemes for variables
+		$matches = $this->tableMatch($details);
+		if (in_array(false, $matches, true)) {
+			throw new Exception("Html post variables do not match user table entries.");
+		}
+		
+		// INSERT INTO users table (field1 = $details['field1']) etc
+		// since user table fields must have a match of details array keys 
+		// you obviously know your own table names and you know which array element must go into them
+		// because each array element matches exact to the table field where it has to be stored
+		
+		// So you know that for example $details['username'] will be inserted into username field in the
+		// table because the script will not allow the key name and table name to be different
+		// And you know that its $details['username'] because you either wrote the html or someone else did
+		// and you can read the input box name
+ 		
+		// unsure how to validate though.. :D
+		
+		// Sigh - confused myself with this code. 
+		
+	}
+	
 }
 ?>

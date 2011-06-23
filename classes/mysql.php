@@ -153,6 +153,24 @@ class Mysql {
 		$this->objectResult = $fetch;
 		return $fetch;
 	}
+	
+	/**
+	fetchFields 	- Returns fields of a given database table
+	@param			- Name of table to fetch fields from
+	Return			- Multidimensional array of table fields on success, false on failure
+	*/
+	
+	public function fetchFields ($tableName) {
+		$tableFields = array();
+		$result = $this->query("SHOW COLUMNS FROM " . $tableName);
+		if ($result) {
+			while ($row = $this->fetchArray($result)) {
+				$tableFields[] = $row;
+			}
+			return $tableFields;
+		}
+		return false;
+	}
 
 }
 
