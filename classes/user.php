@@ -22,7 +22,7 @@ class User {
 		$username = $this->database->escape($username);
 		$password = $this->database->escape($password);
 		
-		$query = $this->database->query("SELECT * FROM user WHERE username = '$username' AND password = '$password'");
+		$query = $this->database->query("SELECT username,password FROM user WHERE username = '$username' AND password = '$password'");
 		$result = $this->database->fetchArray($query);
         
         if ($result) return $result;
@@ -86,28 +86,6 @@ class User {
 	}
 	
 	public function register($details) {
-		// Make sure $details array keys match the user table fields
-		// Allows users to have their own naming schemes for variables
-		/*
-        $matches = $this->tableMatch($details);
-		if (in_array(false, $matches, true)) {
-			throw new Exception("Html post variables do not match user table entries.");
-		}
-		*/
-		// INSERT INTO users table (field1 = $details['field1']) etc
-		// since user table fields must have a match of details array keys 
-		// you obviously know your own table names and you know which array element must go into them
-		// because each array element matches exact to the table field where it has to be stored
-		
-		// So you know that for example $details['username'] will be inserted into username field in the
-		// table because the script will not allow the key name and table name to be different
-		// And you know that its $details['username'] because you either wrote the html or someone else did
-		// and you can read the input box name
- 		
-		// unsure how to validate though.. :D
-		
-		// Sigh - confused myself with this code. 
-		
         // Keeping it simple people must follow the naming scheme we document they can change it if they deem appropriate.
         // It posses a major security risks because people can easily find out what the fields are called in the database without
         // looking at the database.  Therefore its dangerous and leaves a vulnerability exposed to the system.
@@ -123,7 +101,7 @@ class User {
                             if (Util::isValidPassword($re_password) >= 0) {
                                 if (Util::isTextNoSpaces($habbo_name)) {
                                     if (!Util::isNull($accept)) {
-                                        // Everything passed validation!
+                                        
                                         
                                     }
                                 }
