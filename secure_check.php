@@ -22,7 +22,7 @@ if (isset($_POST['login_btn'])) {
     if ($user->login($_POST['username'], $_POST['password']) == false) {
         $error->add("Login Fail", "Username or Password were incorrect!");
     }
+	echo $error->displayAllErrors();
 }
 
-header("Location: index.php");
 ?>
