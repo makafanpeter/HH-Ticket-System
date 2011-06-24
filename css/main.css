@@ -60,6 +60,13 @@ input {
     text-align: left;
 }
 
+#loginMain {
+    margin: 0px auto;
+    padding: 0px;
+    width: 250px;
+    text-align: center;
+}
+
 #banner {
     background-image: url('../images/banner.png');
     background-color: #ffffff;
