@@ -84,7 +84,7 @@ class Util {
             }
         } else {
             if (Self::isString($data) || Self::isText($data) || Self::isTextNoSpaces($data)) {
-                $data = Self:cleanString($data);
+                $data = Self::cleanString($data);
             }
         }
         
