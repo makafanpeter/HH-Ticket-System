@@ -101,7 +101,19 @@ class User {
                             if (Util::isValidPassword($re_password) >= 0) {
                                 if (Util::isTextNoSpaces($habbo_name)) {
                                     if (!Util::isNull($accept)) {
-                                        
+
+										$valkey = Util::generateKey(8, 7);
+                                        $now = date("U");
+                                        $display_name = $username;
+                                        $username = strtolower($username);
+                                        $ip = $_SERVER['REMOTE_ADDR'];
+                                        $password = Util::hashString($password, $valkey);
+                                        $this->database->query("INSERT INTO user
+														(username, display_name, password, email, ip, date_registered, habbo_name, verify_key)
+														VALUES
+														('$username', '$display_name', '$password', '$email', '$ip', '$now', '$habbo_name', '$valKey')");
+                                        $this->sendValidationEmail($valKey);
+                                        $this->user = $this->check_credentials($username, $password);						
                                         
                                     }
                                 }
@@ -113,6 +125,11 @@ class User {
         }
         
 	}
+	
+	public function sendEmail ($body, $subject) {
+        $headers = "From: no-reply@hh.net\r\n";
+        mail($this->user['email'], $subject, $message, $headers);
+    }
 	
     public function isTaken($feild, $value) {
         $query = $this->database->query("SELECT user_id FROM user WHERE $feild = '$value'");
