@@ -6,6 +6,7 @@
     <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8" />
     <title>HH</title>
     <link href = "css/main.css" rel = "stylesheet" type = "text/css" />
+	<script src = "js/jquery.js"></script>
     <script type = "text/javascript">
         function change_img() {
             var img = document.getElementById("habbo_avatar");
@@ -23,36 +24,23 @@
                 img.setAttribute("style", "display: none;");
             }
         }
+		
+		jQuery.fn.center = function () {
+			this.css("position","absolute");
+			this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
+			this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
+			return this;
+		}
+		$(document).ready(function(){
+			$("#loginMain").center();
+		});
     </script>
 </head>
 
 <body>
-    <div id = "main">
-        <div id = "banner"></div>
-        
-        <div id = "container" class = "float-left">
-            <div id = "column1" class = "float-left">
-            
-                <div id = "navigation" class = "float-left rounded border shadow box">
-                    <div id = "navigation-header" class = "rounded header">Navigation</div>
-                    <ul>
-                        <li><a href = "index.php">Home</a></li>
-                        <li><a href = "tickets.php">View Ticket</a></li>
-                        <li><a href = "details.php">Change Details</a></li>
-                        <li><a href = "logout.php">Logout</a></li>
-                    </ul>
-                </div>
-                
-                <div id = "box" class = "float-left rounded border shadow box">
-                    <div id = "box-header" class = "rounded header">We're valid xhtml and css!</div>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ante nulla, congue ut blandit ut, suscipit condimentum nulla.
-                </div>
-            </div>
-            
-            <div id = "column2" class = "float-left">
-                <div id = "content" class = "float-left rounded border shadow box">
-                    <div class = "float-left">
-                        <div class = "float-left">
+    <div id = "loginMain">
+		<div id = "content" class = "rounded border shadow box">
+ 
                             <form action = "register_check.php" method = "post">
                                 Username:<br />
                                 <input type = "text" value = "" id = "id_user" name = "username" /><br />
@@ -67,24 +55,13 @@
                                 Do you accept the Terms and Conditions? <input type = "checkbox" name = "agree" id = "id_chck" /><br />
                                 <input type = "submit" value = "Register" name = "reg_btn" id = "id_reg" />
                             </form>
-                        </div>
-                        <div class = "float-right">
+                        <div class = "" align = "center">
+							<a href = "login.php">Go back to Login</a>
                             <br /><h3 id = "habbo_check"></h3>
                             <img id = "habbo_avatar" alt = "" />
                         </div>
-                    </div>
                     <br class = "clear" />
-				</div>
-            </div>
-            
-            <div id = "footer" class = "clear">
-                Copy&copy; 2011 - All Rights Reserved.
-            </div>
-            
-            <div id = "bottom">
-            </div>
-        </div>
-    </div>
+		</div>
 </body>
 
 </html>
