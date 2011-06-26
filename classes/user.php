@@ -131,6 +131,16 @@ class User {
         mail($this->user['email'], $subject, $message, $headers);
     }
 	
+	    public function sendValidationEmail($validationKey) {
+        $body = "Welcome, " . $this->user['username'] .
+                "\n\nPlease copy and paste the URL below to verify this is your email.\n\n".
+                "http://hh.net/validate.php?e=".$this->user['email']."&k=".$validationKey .
+                "\n\nRegards,\nHH Staff.";
+        $subject = "HH User Registration!";
+        
+        $this->sendEmail($body, $subject);
+    }
+	
     public function isTaken($feild, $value) {
         $query = $this->database->query("SELECT user_id FROM user WHERE $feild = '$value'");
         $result = $this->database->result($query);
