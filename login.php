@@ -33,12 +33,10 @@
                         <input type = "password" value = "" id = "id_pass" name = "password" /><br />
                             <div class = ""><input type = "submit" value = "Login" name = "login_btn" id = "id_login" /></div>
 							<div style = "margin: 8px 15px 0px 3px; padding: 3px 0px;" class = "float-left"><A href = "#">Forgot password?</a></div>
-							<div style = "margin: 8px 15px 0px 3px; padding: 3px 0px;" class = "float-right"><A href = "#">Register</a></div>
+							<div style = "margin: 8px 15px 0px 3px; padding: 3px 0px;" class = "float-right"><A href = "register.php">Register</a></div>
 						<br class = "clear" />
                     </form>
 				</div>
-            
-        </div>
     </div>
 </body>
 
