@@ -7,22 +7,27 @@ function __autoload($class_name) {
 
 include "config.php";
 
-$mysql = new Mysql(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
-
-$con = $mysql->connect();
-$database = $mysql->selectDB(MYSQL_DATABASE, $con);
-
+try {
+	$mysql = new Mysql(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+	$con = $mysql->connect();
+	$database = $mysql->selectDB(MYSQL_DATABASE, $con);
+} catch (Exception $e) {
+	echo $e->getMessage();
+}
 $error = new Error();
-
 if (isset($_POST['login_btn'])) {
     $user = new User($mysql);
-    
+    $username = $user->login($_POST['username'], $_POST['password']);
     //echo ($user->login($_POST['username'], $_POST['password'])) ? "True" : "False";
     
-    if ($user->login($_POST['username'], $_POST['password']) == false) {
+    if (!$username) {
         $error->add("Login Fail", "Username or Password were incorrect!");
-    }
-	echo $error->displayAllErrors();
+    } else {
+		$_SESSION['logged_in'] = $_POST['username'];
+		header("Location: index.php");
+	}
+	header("Location: login.php");
+
 }
 
 ?>

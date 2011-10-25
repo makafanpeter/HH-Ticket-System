@@ -35,9 +35,9 @@ if (isset($_POST['reg_btn'])) {
 		$details['habbo_name'] = $_POST['habbo'];
 	}
 	
-	$array = $user->register($details);
+	$user->register($details);
 	
-	print_r($array);
+	header("Location: login.php");
 	
 }
 ?>

@@ -1,3 +1,16 @@
+<?PHP
+session_start();
+function __autoload($class_name) {
+    include 'classes/' . $class_name . '.php';
+}
+
+if (isset($_SESSION['authenticated'])) {
+	header("Location: index.php");
+}
+
+$error = new Error();
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns = "http://www.w3.org/1999/xhtml">
 
@@ -26,6 +39,12 @@
     <div id = "loginMain">
             
                 <div id = "content" class = "rounded border shadow box">
+				<?PHP 	
+				if ($error->foundErrors()) {
+					echo $error->displayAllErrors();
+					$error->clear();
+				}
+				?>
                     <form action = "secure_check.php" method = "post">
                         Username:<br />
                         <input type = "text" value = "" id = "id_user" name = "username" /><br />

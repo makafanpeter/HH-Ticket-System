@@ -97,7 +97,7 @@ class Util {
 	return			-	Returns a hash string.
 	*/
 	public static function hashString($string, $salt = NULL) {
-		if ($salt === NULL) {
+		if ($salt == NULL) {
 			$salt = substr(hash('sha512',uniqid(rand(), true)), 0, 10);
 		} else {
 			$salt = substr($salt, 0, 10);

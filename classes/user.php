@@ -12,8 +12,8 @@ class User {
 	public function login($username, $password) {
 		if ($user = $this->check_credentials($username, $password)) {
 			$this->user = $user;
-			$_SESSION['token_auth'] = $this->user['user_id'];
-			return $user;
+			//$_SESSION['token_auth'] = $this->user['user_id'];
+			return true;
 		}
 		return false;
 	}
@@ -21,12 +21,21 @@ class User {
 	public function check_credentials($username, $password) {
 		$username = $this->database->escape($username);
 		$password = $this->database->escape($password);
-		
+		$password = Util::hashString($password, $this->getValKey($username));
 		$query = $this->database->query("SELECT username,password FROM user WHERE username = '$username' AND password = '$password'");
-		$result = $this->database->fetchArray($query);
-        
-        if ($result) return $result;
-        return false;
+		if ($this->database->fetchArray($query)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public function getValKey($username) {
+		$query = $this->database->query("SELECT verify_key FROM user WHERE username = '$username'");
+		if ($result = $this->database->fetchArray($query)) {
+			return $result['verify_key'];
+		}
+		return false;
 	}
 	
 	public function logout() {
@@ -90,18 +99,18 @@ class User {
         // It posses a major security risks because people can easily find out what the fields are called in the database without
         // looking at the database.  Therefore its dangerous and leaves a vulnerability exposed to the system.
         
-        Util::cleanData($data);
+        //Util::cleanData($data);
         extract($details);
         
-        if (Util::isTextNoSpaces($username)) {
-            if (!$this->isUsernameTaken("username", $username)) {
-                if (Util::isEmail($email)) {
-                    if (!$this->isTaken("email", $email)) {
-                        if ($password == $re_password) {
-                            if (Util::isValidPassword($re_password) >= 0) {
-                                if (Util::isTextNoSpaces($habbo_name)) {
-                                    if (!Util::isNull($accept)) {
-
+       // if (Util::isTextNoSpaces($username)) {
+       //     if (!$this->isUsernameTaken("username", $username)) {
+       //         if (Util::isEmail($email)) {
+       //             if (!$this->isTaken("email", $email)) {
+       //                 if ($password == $re_password) {
+       //                    if (Util::isValidPassword($re_password) >= 0) {
+		//                   	if (Util::isTextNoSpaces($habbo_name)) {
+		//                             if (!Util::isNull($accept)) {
+		//
 										$valkey = Util::generateKey(8, 7);
                                         $now = date("U");
                                         $display_name = $username;
@@ -111,18 +120,19 @@ class User {
                                         $this->database->query("INSERT INTO user
 														(username, display_name, password, email, ip, date_registered, habbo_name, verify_key)
 														VALUES
-														('$username', '$display_name', '$password', '$email', '$ip', '$now', '$habbo_name', '$valKey')");
-                                        $this->sendValidationEmail($valKey);
-                                        $this->user = $this->check_credentials($username, $password);						
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+														('$username', '$display_name', '$password', '$email', '$ip', '$now', '$habbo_name', '$valkey')");
+                                       // $this->sendValidationEmail($valKey);
+                                        $this->user = $this->check_credentials($username, $password);
+										echo $valkey;
+          //                            
+         //                           }
+         //                       }
+         //                   }
+        //                }
+        //            }
+       //         }
+       //     }
+      //  }
         
 	}
 	
